@@ -21,8 +21,8 @@ debs: $(foreach d, $(PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst 
 
 
 %.deb.upload: %.deb .Packages
-	$(eval EXISTS := $(shell grep -q $(notdir $<) .Packages))
-ifeq ($(EXISTS), 0)
+	$(eval EXISTS := $(shell grep $(notdir $<) .Packages))
+ifeq ($(EXISTS), )
 	package_cloud push psf/infra/ubuntu/trusty $<
 endif
 

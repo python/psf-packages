@@ -11,7 +11,6 @@ deb:
 		--after-install s/postinst \
 		--after-remove s/postrm \
 		bin/consul-template=usr/bin/consul-template \
-		etc/consul-template.d=/etc \
 		usr/share/consul-template=/usr/share \
 		etc/rsyslog.d/49-consul-template.conf=/etc/rsyslog.d/49-consul-template.conf \
 		etc/logrotate.d/consul-template=/etc/logrotate.d/consul-template

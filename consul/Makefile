@@ -14,8 +14,6 @@ deb:
 		--after-install s/postinst \
 		--after-remove s/postrm \
 		bin/consul=/usr/bin/consul \
-		lib/consul=/var/lib \
-		etc/consul.d=/etc \
 		usr/share/consul=/usr/share \
 		etc/rsyslog.d/49-consul.conf=/etc/rsyslog.d/49-consul.conf \
 		etc/logrotate.d/consul=/etc/logrotate.d/consul

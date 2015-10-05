@@ -1,4 +1,5 @@
-PKGS = consul/0.5.2 consul-template/0.10.0-2 python-diamond/4.0.195
+AMD64_PKGS = consul/0.5.2 consul-template/0.10.0-2
+ALL_PKGS = python-diamond/4.0.195
 
 
 .PHONY: debs clean
@@ -17,7 +18,10 @@ all: debs upload
 	$(MAKE) -C $(@D) deb PACKAGE=$(PACKAGE) VERSION=$(VERSION)
 
 
-debs: $(foreach d, $(PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_amd64.deb)
+amd64-debs: $(foreach d, $(AMD64_PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_amd64.deb)
+
+
+all-debs: $(foreach d, $(ALL_PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_all.deb)
 
 
 %.deb.upload: %.deb .Packages
@@ -25,7 +29,8 @@ debs: $(foreach d, $(PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst 
 	if [ "$(EXISTS)" = "" ]; then package_cloud push psf/infra/ubuntu/trusty $<; fi
 
 
-upload: $(foreach d, $(PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_amd64.deb.upload)
+upload: $(foreach d, $(AMD64_PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_amd64.deb.upload) \
+		$(foreach d, $(ALL_PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_all.deb.upload)
 
 
 clean:

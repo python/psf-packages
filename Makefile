@@ -22,9 +22,7 @@ debs: $(foreach d, $(PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst 
 
 %.deb.upload: %.deb .Packages
 	$(eval EXISTS := $(shell grep $(notdir $<) .Packages))
-ifeq ($(EXISTS), )
-	package_cloud push psf/infra/ubuntu/trusty $<
-endif
+	if [ "$(EXISTS)" = "" ]; then package_cloud push psf/infra/ubuntu/trusty $<; fi
 
 
 upload: $(foreach d, $(PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_amd64.deb.upload)

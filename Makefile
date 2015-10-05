@@ -12,7 +12,9 @@ all: debs upload
 
 
 %.deb:
-	$(MAKE) -C $(@D) deb
+	$(eval PACKAGE := $(firstword $(subst _, , $(notdir $@))))
+	$(eval VERSION := $(word 2, $(subst _, , $(notdir $@))))
+	$(MAKE) -C $(@D) deb PACKAGE=$(PACKAGE) VERSION=$(VERSION)
 
 
 debs: $(foreach d, $(PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_amd64.deb)

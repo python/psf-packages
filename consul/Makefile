@@ -1,8 +1,6 @@
-VERSION = 0.5.2
-
 deb:
 	fpm -s dir -t deb \
-		-n consul -v $(VERSION) \
+		-n $(PACKAGE) -v $(VERSION) \
 		-m donald@stufft.io \
 		--vendor HashiCorp \
 		--url http://www.consul.io \

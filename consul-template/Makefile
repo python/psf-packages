@@ -1,8 +1,6 @@
-VERSION = 0.10.0
-
 deb:
 	fpm -s dir -t deb \
-		-n consul-template -v $(VERSION) \
+		-n $(PACKAGE) -v $(VERSION) \
 		-m donald@stufft.io \
 		--vendor HashiCorp \
 		--url https://github.com/hashicorp/consul-template \

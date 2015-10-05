@@ -1,6 +1,7 @@
 deb:
 	fpm -s dir -t deb \
 		-n $(PACKAGE) -v $(VERSION) \
+		--iteration 1 \
 		-m donald@stufft.io \
 		--vendor HashiCorp \
 		--url https://github.com/hashicorp/consul-template \

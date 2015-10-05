@@ -4,7 +4,8 @@ dist: trusty
 sudo: false
 
 install:
-  - gem install fpm
+  - gem install fpm package_cloud
 
 script:
   - make debs
+  - make push

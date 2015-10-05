@@ -1,4 +1,4 @@
-PKGS = consul/0.5.2 consul-template/0.10.0-2
+PKGS = consul/0.5.2 consul-template/0.10.0-2 python-diamond/4.0.195
 
 
 .PHONY: debs clean

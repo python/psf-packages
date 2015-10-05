@@ -18,6 +18,7 @@ set -e
 case "$1" in
   purge)
     rm -rf /etc/consul-template.d
+    rm -rf /usr/share/consul-template
   ;;
 
   upgrade)

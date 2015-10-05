@@ -23,11 +23,13 @@ case "$1" in
     adduser --system --group consul --no-create-home --home /var/lib/consul
 
     mkdir -p /etc/consul-template.d
+    mkdir -p /usr/share/consul-template
 
     # Ensure that our /var/lib/consul directory is owned by the consul
     # user.
     chown consul:consul /var/lib/consul
     chown consul:consul /etc/consul-template.d
+    chown root:consul /usr/share/consul-template
 
     # Restart rsyslog so it picks up our new config
     service rsyslog restart

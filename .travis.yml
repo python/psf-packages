@@ -3,9 +3,6 @@ language: C
 dist: trusty
 sudo: false
 
-install:
-  - gem install fpm package_cloud
+install: gem install fpm package_cloud
 
-script:
-  - make debs
-  - make push
+script: make

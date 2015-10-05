@@ -1,0 +1,5 @@
+#!/bin/sh
+# Default settings for consul. This file is sourced by /etc/init/consul.conf
+
+# Options to pass to consul
+CONSUL_OPTS="-config-dir /etc/consul.d -data-dir /var/lib/consul -ui-dir /usr/share/consul/ui"

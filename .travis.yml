@@ -1,0 +1,10 @@
+language: C
+
+dist: trusty
+sudo: false
+
+install:
+  - gem install fpm
+
+script:
+  - make debs

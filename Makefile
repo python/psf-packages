@@ -1,5 +1,5 @@
 AMD64_PKGS = consul/0.5.2 consul-template/0.10.0-2
-ALL_PKGS = python-diamond/4.0.195
+ALL_PKGS = python-diamond/4.0.195 python-dyn/1.4.2
 
 
 .PHONY: debs clean

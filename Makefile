@@ -1,4 +1,4 @@
-PKGS = consul/0.5.2 consul-template/0.10.0
+PKGS = consul/0.5.2 consul-template/0.10.0-2
 
 
 .PHONY: debs clean

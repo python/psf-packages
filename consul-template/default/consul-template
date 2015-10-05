@@ -1,0 +1,5 @@
+#!/bin/sh
+# Default settings for consul-template. This file is sourced by /etc/init/consul-template.conf
+
+# Options to pass to consul-template
+CONSUL_TEMPLATE_OPTS="-config /etc/consul-template.d"

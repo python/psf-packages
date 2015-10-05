@@ -1,0 +1,48 @@
+#!/bin/sh
+# postinst script for consul-template
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <postinst> `abort-remove'
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+
+case "$1" in
+
+  configure)
+    # Create our User
+    adduser --system --group consul --no-create-home --home /var/lib/consul
+
+    mkdir -p /etc/consul-template.d
+
+    # Ensure that our /var/lib/consul directory is owned by the consul
+    # user.
+    chown consul:consul /var/lib/consul
+    chown consul:consul /etc/consul-template.d
+
+    # Restart rsyslog so it picks up our new config
+    service rsyslog restart
+  ;;
+
+  abort-upgrade|abort-remove|abort-deconfigure)
+    exit 0
+  ;;
+
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+  ;;
+
+esac
+
+
+exit 0

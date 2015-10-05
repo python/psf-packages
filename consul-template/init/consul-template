@@ -1,0 +1,14 @@
+description "Consul Template"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [016]
+
+respawn
+
+script
+    if [ -f "/etc/default/consul-template" ]; then
+        . /etc/default/consul-template
+    fi
+   
+    exec /usr/bin/consul-template ${CONSUL_TEMPLATE_OPTS} 
+end script

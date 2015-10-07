@@ -4,7 +4,7 @@ deb:
 	tar zxf $(TMPDIR)/v0.23.3.tar.gz -C $(TMPDIR)
 	cd $(TMPDIR)/libgit2-0.23.3 && mkdir build
 	cd $(TMPDIR)/libgit2-0.23.3/build && \
-		cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF -DTHREADSAFE=ON ..
+		cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS=-fPIC -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF -DTHREADSAFE=ON ..
 	cd $(TMPDIR)/libgit2-0.23.3/build && cmake --build .
 	virtualenv -ppython2 $(TMPDIR)/venv
 	$(TMPDIR)/venv/bin/pip install cffi

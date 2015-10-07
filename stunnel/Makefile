@@ -8,7 +8,6 @@ deb:
 	mkdir -p $(TMPDIR)/build
 	cd $(TMPDIR)/stunnel-5.23 && make install DESTDIR=$(TMPDIR)/build
 	fpm -s dir -t deb -n $(PACKAGE) -v $(VERSION) -C $(TMPDIR)/build \
-		# -p nodejs_VERSION_ARCH.deb \
 		-d "libssl1.0.0 >= 1.0.0" \
 		-d "libc6 >= 2.14" \
 		etc usr/bin usr/lib usr/share var/lib

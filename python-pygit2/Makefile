@@ -11,7 +11,7 @@ deb:
 	virtualenv -ppython2 $(TMPDIR)/venv
 	$(TMPDIR)/venv/bin/pip install cffi
 	LDFLAGS="-static -L$(TMPDIR)/libgit2-0.23.3/build" \
-		CFLAGS="-I$(TMPDIR)/libgit2-0.23.3/include -O3 -g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -fPIC" \
+		CFLAGS="-I$(TMPDIR)/libgit2-0.23.3/include" \
 		fpm -s python -t deb -n $(PACKAGE) -v $(VERSION) \
 			--python-bin $(TMPDIR)/venv/bin/python \
 			--python-easyinstall $(TMPDIR)/venv/bin/easy_install \

@@ -1,5 +1,10 @@
 language: C
 
+addons:
+  apt:
+    packages:
+      - python-virtualenv
+
 dist: trusty
 sudo: false
 

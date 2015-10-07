@@ -1,4 +1,4 @@
-AMD64_PKGS = consul/0.5.2 consul-template/0.10.0-2 python-cffi/1.2.1 python-pygit2/0.23.1-3
+AMD64_PKGS = consul/0.5.2 consul-template/0.10.0-2 python-cffi/1.2.1
 ALL_PKGS = python-diamond/4.0.195 python-dyn/1.4.2
 
 

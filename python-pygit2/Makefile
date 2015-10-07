@@ -6,8 +6,12 @@ deb:
 	cd $(TMPDIR)/libgit2-0.23.3/build && \
 		cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF -DTHREADSAFE=ON .. && \
 		cmake --build .
-	cd $(TMPDIR)/libgit2-0.23.3/build && ls
-	cd $(TMPDIR)/libgit2-0.23.3 && ls
+	virtualenv -ppython2 $(TMPDIR)/venv
+	$(TMPDIR)/venv/bin/pip install cffi
 	LDFLAGS="-static -L$(TMPDIR)/libgit2-0.23.3/build" \
 		CFLAGS="-I$(TMPDIR)/libgit2-0.23.3/include" \
-		fpm -s python -t deb -n $(PACKAGE) -v $(VERSION) pygit2
+		fpm -s python -t deb -n $(PACKAGE) -v $(VERSION) \
+			--python-bin $(TMPDIR)/venv/bin/python \
+			--python-easyinstall $(TMPDIR)/venv/bin/easy_install \
+			--python-install-lib /usr/local/lib/python2.7/dist-packages \
+			--verbose pygit2

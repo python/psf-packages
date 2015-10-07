@@ -13,5 +13,5 @@ deb:
 		-C $(TMPDIR)/build \
 		-d "libssl1.0.0 >= 1.0.0" \
 		-d "libc6 >= 2.14" \
-		--deb-init usr/share/doc/stunnel/examples/stunnel.init \
+		--deb-init $(TMPDIR)/build/usr/share/doc/stunnel/examples/stunnel.init \
 		etc usr/bin usr/lib usr/share var/lib

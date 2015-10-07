@@ -5,12 +5,10 @@ deb:
 	cd $(TMPDIR)/libgit2-0.23.3 && mkdir build
 	cd $(TMPDIR)/libgit2-0.23.3/build && \
 		cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF -DTHREADSAFE=ON ..
-	cd $(TMPDIR)/libgit2-0.23.3/build && \
-		CFLAGS="-O3 -g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -fPIC" \
-		cmake --build .
+	cd $(TMPDIR)/libgit2-0.23.3/build && cmake --build .
 	virtualenv -ppython2 $(TMPDIR)/venv
 	$(TMPDIR)/venv/bin/pip install cffi
-	LDFLAGS="-static -L$(TMPDIR)/libgit2-0.23.3/build" \
+	LDFLAGS="-L$(TMPDIR)/libgit2-0.23.3/build" \
 		CFLAGS="-I$(TMPDIR)/libgit2-0.23.3/include" \
 		fpm -s python -t deb -n $(PACKAGE) -v $(VERSION) \
 			--python-bin $(TMPDIR)/venv/bin/python \

@@ -1,5 +1,8 @@
 AMD64_PKGS = consul/0.5.2 consul-template/0.10.0-2 python-cffi/1.2.1 stunnel/5.24-1
-ALL_PKGS = python-diamond/4.0.195 python-dyn/1.4.2 python-wal-e/0.8.1-2 python-azure/1.0.2-2
+ALL_PKGS = python-diamond/4.0.195 python-dyn/1.4.2 python-wal-e/0.8.1-2 \
+			python-azure/1.0.2-2 python-azure-servicemanagement-legacy/0.20.1 \
+			python-azure-mgmt/0.20.1 python-azure-servicebus/0.20.1 \
+			python-azure-storage/0.20.2
 
 
 .PHONY: debs clean

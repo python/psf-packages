@@ -7,5 +7,4 @@ deb:
 	cd $(TMPDIR)/wal-e-0.8.1 && \
 		sed -i '/^azure.*/d' ./requirements.txt
 	fpm -s python -t deb -n $(PACKAGE) -v $(VERSION2) --iteration $(ITERATION) \
-		-C $(TMPDIR)/wal-e-0.8.1 \
-		./setup.py
+		$(TMPDIR)/wal-e-0.8.1/setup.py

@@ -2,13 +2,13 @@ deb:
 	$(eval ITERATION := $(lastword $(subst -, , $(VERSION))))
 	$(eval VERSION2 := $(patsubst %-$(ITERATION), %, $(VERSION)))
 	$(eval TMPDIR := $(shell mktemp -d))
-	wget https://www.stunnel.org/downloads/stunnel-5.23.tar.gz -O $(TMPDIR)/stunnel-5.23.tar.gz
-	tar zxf $(TMPDIR)/stunnel-5.23.tar.gz -C $(TMPDIR)/
-	cd $(TMPDIR)/stunnel-5.23 && \
+	wget https://www.stunnel.org/downloads/stunnel-5.24.tar.gz -O $(TMPDIR)/stunnel-5.24.tar.gz
+	tar zxf $(TMPDIR)/stunnel-5.24.tar.gz -C $(TMPDIR)/
+	cd $(TMPDIR)/stunnel-5.24 && \
 		./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
-	cd $(TMPDIR)/stunnel-5.23 && make
+	cd $(TMPDIR)/stunnel-5.24 && make
 	mkdir -p $(TMPDIR)/build
-	cd $(TMPDIR)/stunnel-5.23 && make install DESTDIR=$(TMPDIR)/build
+	cd $(TMPDIR)/stunnel-5.24 && make install DESTDIR=$(TMPDIR)/build
 	fpm -s dir -t deb -n $(PACKAGE) -v $(VERSION2) --iteration $(ITERATION) \
 		-C $(TMPDIR)/build \
 		-d "libssl1.0.0 >= 1.0.0" \

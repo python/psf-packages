@@ -1,6 +1,6 @@
 language: C
 
-dist: trusty
+dist: focal
 sudo: false
 
 install: gem install fpm package_cloud

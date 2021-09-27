@@ -1,4 +1,4 @@
-AMD64_PKGS = consul/0.5.2 consul-template/0.10.0-2 python-cffi/1.2.1 stunnel/5.24-1
+AMD64_PKGS = consul/1.4.2 consul-template/0.19.5 python-cffi/1.2.1 stunnel/5.24-1
 ALL_PKGS = python-diamond/4.0.195 python-dyn/1.4.2 python-wal-e/0.8.1-3
 
 
@@ -9,7 +9,7 @@ all: upload
 
 
 .Packages:
-	wget https://packagecloud.io/psf/infra/ubuntu/dists/trusty/main/binary-amd64/Packages -O .Packages
+	wget https://packagecloud.io/psf/infra/ubuntu/dists/focal/main/binary-amd64/Packages -O .Packages
 
 
 %.deb:
@@ -26,7 +26,7 @@ all-debs: $(foreach d, $(ALL_PKGS), $(firstword $(subst /, , $(d)))/$(firstword 
 
 %.deb.upload: %.deb .Packages
 	$(eval EXISTS := $(shell grep $(notdir $<) .Packages))
-	if [ "$(EXISTS)" = "" ]; then package_cloud push psf/infra/ubuntu/trusty $<; fi
+	if [ "$(EXISTS)" = "" ]; then package_cloud push psf/infra/ubuntu/focal $<; fi
 
 
 upload: $(foreach d, $(AMD64_PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_amd64.deb.upload) \

@@ -1,2 +1,5 @@
 .Packages
 *.deb
+*/usr/bin/*
+builds/*
+.state/

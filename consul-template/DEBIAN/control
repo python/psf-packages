@@ -1,0 +1,6 @@
+Package: consul-template
+Version: 0.39.0
+Architecture: {ARCHITECTURE}
+Maintainer: PSF Infrastructure Team <infrastructure-staff@python.org>
+Description: Template rendering, notifier, and supervisor for Hashicorp Consul and Vault data.
+#Depends: consul # Not enabled by default, we could optionally require consul-template depend on consul being installed

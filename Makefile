@@ -1,38 +1,56 @@
-AMD64_PKGS = consul/1.4.2 consul-template/0.19.5 python-cffi/1.2.1 stunnel/5.24-1
-ALL_PKGS = python-diamond/4.0.195 python-dyn/1.4.2 python-wal-e/0.8.1-3
+.PHONY: help
+help:						## Display this help text for Makefile
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
+.state/container: Dockerfile		## Build the container
+	@echo "Building container"
+	@docker build -t psf-package-builder .
+	@mkdir -p .state && touch .state/container
 
-.PHONY: debs clean
+# ----------------
+# -- Core Targets
+# ----------------
+.PHONY: amd64
+amd64: .state/container			## Build latest for AMD64
+	@echo "Building for AMD64"
+	@docker run --rm -v "$(pwd)/builds:/build/builds" psf-package-builder /build/tools/build_deb.sh -a amd64
 
+.PHONY: arm
+arm: .state/container		 ## Build latest for ARM
+	@echo "Building for ARM"
+	@docker run --rm -v "$(pwd)/builds:/build/builds" psf-package-builder /build/tools/build_deb.sh -a arm64
 
-all: upload
+.PHONY: all					 ## Build latest for both AMD64 and ARM
+all: amd64 arm
 
+.PHONY: upload
+upload:						## Upload the package to PackageCloud
+	@echo "Uploading to PackageCloud..."
+	# TODO: Implement upload
 
-.Packages:
-	wget https://packagecloud.io/psf/infra/ubuntu/dists/focal/main/binary-amd64/Packages -O .Packages
+# ----------------
+# Utilities / Uncommon Targets
+# ----------------
+.PHONY: clean
+clean:						## Clean up the build artifacts
+	@echo "Cleaning up your mess..."
+	@rm -rf builds/*
+	@rm -rf .state
 
+.PHONY: manual-build
+manual: 					## Locally build the package with tools/build_deb.sh
+	@echo "Manually building package"
+	@tools/build_deb.sh
 
-%.deb:
-	$(eval PACKAGE := $(firstword $(subst _, , $(notdir $@))))
-	$(eval VERSION := $(word 2, $(subst _, , $(notdir $@))))
-	$(MAKE) -C $(@D) deb PACKAGE=$(PACKAGE) VERSION=$(VERSION)
+.PHONY: amd64-nobump
+amd64-nobump: .state/container	## Build latest for AMD64 without bumping version
+	@echo "Building for AMD64 without bumping version"
+	@docker run --rm -v "$(pwd):/build" psf-package-builder /build/tools/build_deb.sh -a amd64 -K
 
+.PHONY: arm-nobump
+arm-nobump: .state/container	## Build latest for ARM without bumping version
+	@echo "Building for ARM without bumping version"
+	@docker run --rm -v "$(pwd):/build" psf-package-builder /build/tools/build_deb.sh -a arm64 -K
 
-amd64-debs: $(foreach d, $(AMD64_PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_amd64.deb)
-
-
-all-debs: $(foreach d, $(ALL_PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_all.deb)
-
-
-%.deb.upload: %.deb .Packages
-	$(eval EXISTS := $(shell grep $(notdir $<) .Packages))
-	if [ "$(EXISTS)" = "" ]; then package_cloud push psf/infra/ubuntu/focal $<; fi
-
-
-upload: $(foreach d, $(AMD64_PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_amd64.deb.upload) \
-		$(foreach d, $(ALL_PKGS), $(firstword $(subst /, , $(d)))/$(firstword $(subst /, , $(d)))_$(lastword $(subst /, , $(d)))_all.deb.upload)
-
-
-clean:
-	rm -f .Packages
-	find . -name '*.deb' -delete
+.PHONY: all-nobump			 ## Build latest for both AMD64 and ARM without bumping version
+all-nobump: amd64-nobump arm-nobump

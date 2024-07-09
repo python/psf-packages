@@ -1,0 +1,6 @@
+Package: consul
+Version: 1.19.0
+Architecture: {ARCHITECTURE}
+Maintainer: PSF Infrastructure Team <infrastructure-staff@python.org>
+Description: Consul is a distributed, highly available, and data center aware solution to connect and configure
+ applications across dynamic, distributed infrastructure.

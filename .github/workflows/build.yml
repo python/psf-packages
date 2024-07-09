@@ -1,0 +1,46 @@
+name: Build Debian Packages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: [consul, consul-template]
+        arch: [amd64, arm64]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get version from control file
+      id: get_version
+      run: |
+        VERSION=$(grep '^Version:' ${{ matrix.package }}/DEBIAN/control | awk '{print $2}')
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Download binary
+      run: |
+        BINARY_URL="https://releases.hashicorp.com/${{ matrix.package }}/${{ steps.get_version.outputs.VERSION }}/${{ matrix.package }}_${{ steps.get_version.outputs.VERSION }}_linux_${{ matrix.arch }}.zip"
+        curl -L $BINARY_URL -o ${{ matrix.package }}_binary.zip
+        unzip ${{ matrix.package }}_binary.zip -d ${{ matrix.package }}/usr/bin
+        chmod +x ${{ matrix.package }}/usr/bin/${{ matrix.package }}
+
+    - name: Build Debian package
+      uses: jiro4989/build-deb-action@v2
+      with:
+        package: ${{ matrix.package }}
+        package_root: ./${{ matrix.package }}
+        maintainer: PSF Infrastructure Team
+        version: ${{ steps.get_version.outputs.VERSION }}
+        arch: ${{ matrix.arch }}
+        desc: 'Debian package for ${{ matrix.package }}'
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.package }}-${{ matrix.arch }}
+        path: ./*.deb
